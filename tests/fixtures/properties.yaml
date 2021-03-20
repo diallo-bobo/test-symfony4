@@ -1,0 +1,30 @@
+App\Entity\Property:
+  property{1..5}:
+    title: Title<current()>
+    description: Description<current()>
+    surface: 20
+    rooms: 5
+    bedrooms: 4
+    floor: 2
+    price: 1500
+    heat: 1
+    city: Dakar
+    address: Scat Urbam
+    postal_code: 11500
+    created_at: <datetime()>
+    sold: false
+
+  property{6..9}:
+    title: Title<current()>
+    description: Description<current()>
+    surface: 20
+    rooms: 5
+    bedrooms: 4
+    floor: 2
+    price: 1500
+    heat: 1
+    city: Dakar
+    address: Scat Urbam
+    postal_code: 11500
+    created_at: <datetime()>
+    sold: true
