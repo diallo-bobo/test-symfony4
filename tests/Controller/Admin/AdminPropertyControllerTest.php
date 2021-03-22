@@ -57,7 +57,7 @@ class AdminPropertyControllerTest extends WebTestCase
       $form = $crawler->selectButton('Ajouter')->form([
          'property[title]' => 'Un nouveau bien',
          'property[description]' => 'Description du nuveau bien',
-         'property[surface]' => '50',
+         'property[surface]' => 50,
          'property[rooms]' => '5',
          'property[bedrooms]' => '20',
          'property[floor]' => '1',
@@ -65,7 +65,7 @@ class AdminPropertyControllerTest extends WebTestCase
          'property[heat]' => '0',
          'property[city]' => 'Dakar City',
          'property[address]' => 'Scat Urbam',
-         'property[postal_code]' => '1600',
+         'property[postal_code]' => '16000',
          'property[sold]' => '1',
       ]);
       $this->client->submit($form);
@@ -93,8 +93,7 @@ class AdminPropertyControllerTest extends WebTestCase
 
    public function testDeleteProperty(): void
    {
-      $this->loadData();
-      $this->assertEquals(9, $this->propertyRepository->count([]));
+      ['count' => $count] = $this->loadDataAndCountRows();
 
       $crawler = $this->client->request('GET', '/admin/properties');
       $form = $crawler
@@ -103,7 +102,7 @@ class AdminPropertyControllerTest extends WebTestCase
          ->form();
 
       $this->client->submit($form);
-      $this->assertEquals(8, $this->propertyRepository->count([]));
+      $this->assertEquals($count - 1, $this->propertyRepository->count([]));
       $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
       $this->client->followRedirect();
       $this->assertSelectorTextContains('.alert.alert-success', 'Bien supprimé avec success');
@@ -112,8 +111,7 @@ class AdminPropertyControllerTest extends WebTestCase
 
    public function testNotDeletePropertyWithInvalidToken(): void
    {
-      $this->loadData();
-      $this->assertEquals(9, $this->propertyRepository->count([]));
+      ['count' => $count] = $this->loadDataAndCountRows();
 
       $crawler = $this->client->request('GET', '/admin/properties');
       $form = $crawler
@@ -125,7 +123,7 @@ class AdminPropertyControllerTest extends WebTestCase
          ]);
       $this->client->submit($form);
 
-      $this->assertEquals(9, $this->propertyRepository->count([]));
+      $this->assertEquals($count, $this->propertyRepository->count([]));
       $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
       $this->client->followRedirect();
       $this->assertSelectorTextContains('h1', 'Gérer les biens');
@@ -133,8 +131,7 @@ class AdminPropertyControllerTest extends WebTestCase
 
    public function testDeletePropertyWithValidToken(): void
    {
-      ['property1' => $property] = $this->loadData();
-      $this->assertEquals(9, $this->propertyRepository->count([]));
+      ['property' => $property, 'count' => $count] = $this->loadDataAndCountRows();
 
       $crawler = $this->client->request('GET', '/admin/properties');
       $csrfToken = $this->client->getContainer()
@@ -149,12 +146,23 @@ class AdminPropertyControllerTest extends WebTestCase
             '_token' => $csrfToken,
          ]);
       $this->client->submit($form);
-      $this->assertEquals(8, $this->propertyRepository->count([]));
+      $this->assertEquals($count - 1, $this->propertyRepository->count([]));
    }
 
    protected function setUp(): void
    {
       parent::setUp();
       $this->propertyRepository = self::$container->get(PropertyRepository::class);
+   }
+
+   /**
+    * @return array<mixed>
+    */
+   public function loadDataAndCountRows(): array
+   {
+      return [
+         'property' => $this->loadData()['property1'],
+         'count' => $this->propertyRepository->count([])
+      ];
    }
 }
