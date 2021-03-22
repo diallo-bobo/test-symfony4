@@ -15,7 +15,7 @@ class HomeControllerTest extends WebTestCase
    {
       $this->client->request('GET', '/');
       $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-      $this->assertSelectorTextContains('h1', 'Hello');
+      $this->assertSelectorTextContains('h2', 'Les derniers biens');
    }
 
    public function testShowDetailsProduct()

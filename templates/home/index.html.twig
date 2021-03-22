@@ -3,17 +3,10 @@
 {% block title %}Hello HomeController!{% endblock %}
 
 {% block body %}
-  <div class="jumbotron text-center">
-    <h1>Hello HomeController</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet doloribus ea harum iure odio rem similique
-      suscipit. Debitis eum explicabo facilis, libero nesciunt pariatur possimus. Distinctio doloribus eaque eos
-      quas.</p>
-  </div>
-
-  <div class="container">
+  <div class="container mt-4">
     <h2>Les derniers biens</h2>
     {% for property in properties %}
-      <div class="col-3">
+      <div class="col-md-3" style="padding: 5px;">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">
