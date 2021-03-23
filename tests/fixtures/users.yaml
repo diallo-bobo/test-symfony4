@@ -1,0 +1,12 @@
+App\Entity\User:
+  user{1..8}:
+    username: user<current()>
+    password: bdiallo
+
+  user-user:
+    username: bobo
+    password: "\\$2y\\$10\\$QVJ6yzkoqDDmx9iz.VZsO.vERs0zkV4rzRhmCQddC8sxVpSbo259."
+
+  user-admin:
+    username: admin
+    password: "\\$2y\\$10\\$QVJ6yzkoqDDmx9iz.VZsO.vERs0zkV4rzRhmCQddC8sxVpSbo259."
