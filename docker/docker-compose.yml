@@ -1,0 +1,32 @@
+version: "3.3"
+
+services:
+  db_gitlab:
+    image: mysql
+    container_name: db_docker_gitlab
+    restart: always
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    networks:
+      - dev
+
+  www_gitlab:
+    build: php
+    container_name: www_docker_gitlab
+    ports:
+      - "8080:80"
+    volumes:
+      - ./php/vhosts:/etc/apache2/sites-enabled
+      - ../:/var/www
+    restart: always
+    networks:
+      - dev
+
+networks:
+  dev:
+
+volumes:
+  db-data:
+

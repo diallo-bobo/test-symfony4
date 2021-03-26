@@ -8,23 +8,23 @@ use App\Tests\RepositoryTestCase;
 
 class UserRepositoryTest extends RepositoryTestCase
 {
-   use FixturesTrait;
+    use FixturesTrait;
 
-   /**
-    * @var UserRepository
-    */
-   protected $repository = null;
+    /**
+     * @var UserRepository
+     */
+    protected $repository = null;
 
-   protected $repositoryClass = UserRepository::class;
+    protected $repositoryClass = UserRepository::class;
 
-   public function testCount()
-   {
-      $this->loadData();
-      $this->assertEquals(10, $this->repository->count([]));
-   }
+    public function testCount()
+    {
+        $this->loadData();
+        $this->assertEquals(10, $this->repository->count([]));
+    }
 
-   public function loadData(): void
-   {
-      $this->loadFixtures(['users']);
-   }
+    public function loadData(): void
+    {
+        $this->loadFixtures(['users']);
+    }
 }

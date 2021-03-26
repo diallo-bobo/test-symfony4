@@ -9,24 +9,24 @@ use App\Tests\ToolsTrait;
 
 class UserTest extends KernelTestCase
 {
-   use FixturesTrait;
-   use ToolsTrait;
+    use FixturesTrait;
+    use ToolsTrait;
 
-   /**
-    * @var User
-    */
-   protected User $user;
+    /**
+     * @var User
+     */
+    protected User $user;
 
-   public function testTrue()
-   {
-      $this->assertTrue(true);
-   }
+    public function testTrue()
+    {
+        $this->assertTrue(true);
+    }
 
-   protected function setUp(): void
-   {
-      parent::setUp();
-      $this->user = (new User())
-         ->setUsername('demo')
-         ->setPassword('demo');
-   }
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->user = (new User())
+            ->setUsername('demo')
+            ->setPassword('demo');
+    }
 }

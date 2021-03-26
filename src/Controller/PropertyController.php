@@ -17,50 +17,50 @@ use Symfony\Component\Routing\Annotation\Route;
 class PropertyController extends AbstractController
 {
 
-   /**
-    * @var PropertyRepository
-    */
-   private PropertyRepository $repository;
-   /**
-    * @var ObjectManager
-    */
-   private ObjectManager $em;
+    /**
+     * @var PropertyRepository
+     */
+    private PropertyRepository $repository;
+    /**
+     * @var ObjectManager
+     */
+    private ObjectManager $em;
 
-   public function __construct(PropertyRepository $repository, EntityManagerInterface $em)
-   {
-      $this->repository = $repository;
-      $this->em = $em;
-   }
+    public function __construct(PropertyRepository $repository, EntityManagerInterface $em)
+    {
+        $this->repository = $repository;
+        $this->em = $em;
+    }
 
-   /**
-    * @Route("/biens", name="property.index")
-    * @return Response
-    */
-   public function index(): Response
-   {
-      return $this->render('property/index.html.twig', [
-         'current_menu' => 'properties',
-         'properties' => $this->repository->find(1)
-      ]);
-   }
+    /**
+     * @Route("/biens", name="property.index")
+     * @return Response
+     */
+    public function index(): Response
+    {
+        return $this->render('property/index.html.twig', [
+            'current_menu' => 'properties',
+            'properties' => $this->repository->find(1)
+        ]);
+    }
 
-   /**
-    * @Route("/biens/{slug}-{id}", name="property.show", requirements={"slug": "[a-z0-9\-]*", "id": "\d+"})
-    * @param Property $property
-    * @param string $slug
-    * @return Response
-    */
-   public function show(Property $property, string $slug): Response
-   {
-      if ($property->getSlug() !== $slug) {
-         return $this->redirectToRoute('property.show', [
-            'id' => $property->getId(),
-            'slug' => $property->getSlug()
-         ], 301);
-      }
+    /**
+     * @Route("/biens/{slug}-{id}", name="property.show", requirements={"slug": "[a-z0-9\-]*", "id": "\d+"})
+     * @param Property $property
+     * @param string $slug
+     * @return Response
+     */
+    public function show(Property $property, string $slug): Response
+    {
+        if ($property->getSlug() !== $slug) {
+            return $this->redirectToRoute('property.show', [
+                'id' => $property->getId(),
+                'slug' => $property->getSlug()
+            ], 301);
+        }
 
-      return $this->render('property/show.html.twig', [
-         'property' => $property
-      ]);
-   }
+        return $this->render('property/show.html.twig', [
+            'property' => $property
+        ]);
+    }
 }

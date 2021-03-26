@@ -9,16 +9,16 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-   /**
-    * @Route("/", name="home.index")
-    * @param PropertyRepository $propertyRepository
-    * @return Response
-    */
-   public function index(PropertyRepository $propertyRepository): Response
-   {
-      return $this->render('home/index.html.twig', [
-         'controller_name' => 'HomeController',
-         'properties' => $propertyRepository->findLatest()
-      ]);
-   }
+    /**
+     * @Route("/", name="home.index")
+     * @param PropertyRepository $propertyRepository
+     * @return Response
+     */
+    public function index(PropertyRepository $propertyRepository): Response
+    {
+        return $this->render('home/index.html.twig', [
+            'controller_name' => 'HomeController',
+            'properties' => $propertyRepository->findLatest()
+        ]);
+    }
 }

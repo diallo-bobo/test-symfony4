@@ -9,19 +9,19 @@ namespace App\Tests;
  */
 class RepositoryTestCase extends KernelTestCase
 {
-   /**
-    * @var E
-    */
-   protected $repository = null;
+    /**
+     * @var E
+     */
+    protected $repository = null;
 
-   /**
-    * @var class-string<E>
-    */
-   protected $repositoryClass = null;
+    /**
+     * @var class-string<E>
+     */
+    protected $repositoryClass = null;
 
-   public function setUp(): void
-   {
-      parent::setUp();
-      $this->repository = self::$container->get($this->repositoryClass);
-   }
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->repository = self::$container->get($this->repositoryClass);
+    }
 }

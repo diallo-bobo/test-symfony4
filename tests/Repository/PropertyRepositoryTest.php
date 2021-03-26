@@ -8,35 +8,35 @@ use App\Tests\RepositoryTestCase;
 
 class PropertyRepositoryTest extends RepositoryTestCase
 {
-   use FixturesTrait;
+    use FixturesTrait;
 
-   /**
-    * @var PropertyRepository
-    */
-   protected $repository = null;
+    /**
+     * @var PropertyRepository
+     */
+    protected $repository = null;
 
-   protected $repositoryClass = PropertyRepository::class;
+    protected $repositoryClass = PropertyRepository::class;
 
-   public function testCount()
-   {
-      $this->loadData();
-      $this->assertEquals(9, $this->repository->count([]));
-   }
+    public function testCount()
+    {
+        $this->loadData();
+        $this->assertEquals(9, $this->repository->count([]));
+    }
 
-   public function loadData(): void
-   {
-      $this->loadFixtures(['properties']);
-   }
+    public function loadData(): void
+    {
+        $this->loadFixtures(['properties']);
+    }
 
-   public function testFindAllVisible(): void
-   {
-      $this->loadData();
-      $this->assertCount(5, $this->repository->findAllVisible());
-   }
+    public function testFindAllVisible(): void
+    {
+        $this->loadData();
+        $this->assertCount(5, $this->repository->findAllVisible());
+    }
 
-   public function testFindLatedst(): void
-   {
-      $this->loadData();
-      $this->assertCount(4, $this->repository->findLatest());
-   }
+    public function testFindLatedst(): void
+    {
+        $this->loadData();
+        $this->assertCount(4, $this->repository->findLatest());
+    }
 }
