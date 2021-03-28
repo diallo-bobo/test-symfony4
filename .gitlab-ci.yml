@@ -52,5 +52,5 @@ phpunit:
     - php bin/console doctrine:database:create --env=test
     - php bin/console doctrine:migration:migrate --env=test --no-interaction
   script:
-    - php bin/phpunit --coverage-text
+    - php bin/phpunit --coverage-text --colors=never
   allow_failure: false
