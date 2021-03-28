@@ -29,6 +29,13 @@
              aria-current="page" href="{{ path('property.index') }}">Acheter</a>
         </li>
       </ul>
+      {% if app.user %}
+        <div class="navbar nav-bar">
+          <div class="nav-item">
+            <a href="{{ path('logout') }}" style="color: white">Se deconnecter</a>
+          </div>
+        </div>
+      {% endif %}
     </div>
   </div>
 </nav>

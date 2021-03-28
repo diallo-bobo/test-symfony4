@@ -20,8 +20,10 @@ class AdminPropertyControllerTest extends WebTestCase
     public function testIndexAdminProperties(): void
     {
         $this->loadData();
+        $this->logAdmin();
         $this->client->request('GET', '/admin/properties');
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->expectTitle('Gérer des biens');
     }
 
     /**
@@ -34,23 +36,26 @@ class AdminPropertyControllerTest extends WebTestCase
 
     public function testShowFormEditProperty(): void
     {
-        /** @var Property $property * */
+        /** @var Property $property **/
         ['property1' => $property] = $this->loadData();
 
+        $this->logAdmin();
         $this->client->request('GET', '/admin/properties/' . $property->getId());
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $this->assertSelectorTextContains('h1', 'Editer le bien');
+        $this->expectH1('Editer le bien');
     }
 
     public function testShowFormCreateProperty(): void
     {
+        $this->logAdmin();
         $this->client->request('GET', '/admin/properties/create');
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $this->assertSelectorTextContains('h1', 'Ajouter un bien');
+        $this->expectH1('Ajouter un bien');
     }
 
     public function testCreateNewProperty(): void
     {
+        $this->logAdmin();
         $count = $this->propertyRepository->count([]);
 
         $crawler = $this->client->request('GET', '/admin/properties/create');
@@ -68,31 +73,37 @@ class AdminPropertyControllerTest extends WebTestCase
             'property[postal_code]' => '16000',
             'property[sold]' => '1',
         ]);
+
         $this->client->submit($form);
         $this->assertResponseRedirects('/admin/properties');
         $this->assertEquals($count + 1, $this->propertyRepository->count([]));
         $this->client->followRedirect();
-        $this->assertSelectorTextContains('.alert.alert-success', 'Bien crée avec success');
+        $this->expectSuccessAlert();
     }
 
-    public function testEditProperty(): void
+    public function stestEditProperty(): void
     {
-        /** @var Property $property * */
+        $this->logAdmin();
+
+        /** @var Property $property */
         ['property1' => $property] = $this->loadData();
 
         $crawler = $this->client->request('GET', '/admin/properties/' . $property->getId());
         $form = $crawler->selectButton('Editer')->form([
             'property[title]' => 'Un bien modifié',
-            'property[description]' => 'Description d\'un bien modifié',
+            'property[description]' => 'Description d\'un bien modifiéss',
         ]);
+
         $this->client->submit($form);
-        $this->assertResponseRedirects('/admin/properties');
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
+        $this->assertResponseRedirects('/admin/properties/');
         $this->client->followRedirect();
         $this->assertSelectorTextContains('.alert.alert-success', 'Bien modifié avec success');
     }
 
-    public function testDeleteProperty(): void
+    public function stestDeleteProperty(): void
     {
+        $this->logAdmin();
         ['count' => $count] = $this->loadDataAndCountRows();
 
         $crawler = $this->client->request('GET', '/admin/properties');
@@ -102,7 +113,8 @@ class AdminPropertyControllerTest extends WebTestCase
             ->form();
 
         $this->client->submit($form);
-        $this->assertEquals($count - 1, $this->propertyRepository->count([]));
+        $rows = $this->propertyRepository->count([]);
+        $this->assertEquals($count - 1, $rows);
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
         $this->client->followRedirect();
         $this->assertSelectorTextContains('.alert.alert-success', 'Bien supprimé avec success');
@@ -119,8 +131,9 @@ class AdminPropertyControllerTest extends WebTestCase
         ];
     }
 
-    public function testNotDeletePropertyWithInvalidToken(): void
+    public function stestNotDeletePropertyWithInvalidToken(): void
     {
+        $this->logAdmin();
         ['count' => $count] = $this->loadDataAndCountRows();
 
         $crawler = $this->client->request('GET', '/admin/properties');
@@ -139,8 +152,9 @@ class AdminPropertyControllerTest extends WebTestCase
         $this->assertSelectorTextContains('h1', 'Gérer les biens');
     }
 
-    public function testDeletePropertyWithValidToken(): void
+    public function stestDeletePropertyWithValidToken(): void
     {
+        $this->logAdmin();
         ['property' => $property, 'count' => $count] = $this->loadDataAndCountRows();
 
         $crawler = $this->client->request('GET', '/admin/properties');
@@ -163,5 +177,11 @@ class AdminPropertyControllerTest extends WebTestCase
     {
         parent::setUp();
         $this->propertyRepository = self::$container->get(PropertyRepository::class);
+    }
+
+    public function logAdmin()
+    {
+        $users = $this->loadFixtures(['users']);
+        $this->login($users['user-user']);
     }
 }

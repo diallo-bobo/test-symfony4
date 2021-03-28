@@ -24,6 +24,29 @@ services:
     networks:
       - dev
 
+#  phpmyadmin:
+#    image: phpmyadmin
+#    container_name: phpmyadmin_docker_gitlab
+#    restart: always
+#    depends_on:
+#      - db
+#    ports:
+#      - 8080:80
+#    environment:
+#      PMA_HOST: db
+#    networks:
+#      - dev
+#
+#  maildev:
+#    image: maildev/maildev
+#    container_name: maildev_docker_gitlab
+#    command: bin/maildev --web 80 --smtp 25 --hide-extensions STARTTLS
+#    ports:
+#      - "8081:80"
+#    restart: always
+#    networks:
+#      - dev
+
 networks:
   dev:
 

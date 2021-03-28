@@ -46,18 +46,19 @@ class SecurityControllerTest extends WebTestCase
         $this->assertTrue($this->isAuthenticated());
     }
 
-    /*public function testLogout()
+    public function testLogout()
     {
-       $this->client->request('GET', '/logout');
-       $this->assertResponseRedirects(Response::HTTP_FOUND);
-    }*/
+        $this->client->request('GET', '/logout');
+        $this->client->followRedirect();
+        $this->assertSelectorTextNotContains('a', 'Se deconnecter');
+    }
 
     /**
      * @return bool
      */
     public function isAuthenticated(): bool
     {
-        /** @var SecurityDataCollector $securityCollector * */
+        /** @var SecurityDataCollector $securityCollector **/
         $securityCollector = $this->client->getProfile()->getCollector('security');
 
         return $securityCollector->isAuthenticated();
