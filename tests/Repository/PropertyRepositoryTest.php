@@ -2,9 +2,11 @@
 
 namespace App\Tests\Repository;
 
+use App\Entity\PropertySearch;
 use App\Repository\PropertyRepository;
 use App\Tests\FixturesTrait;
 use App\Tests\RepositoryTestCase;
+use Doctrine\ORM\Query;
 
 class PropertyRepositoryTest extends RepositoryTestCase
 {
@@ -38,5 +40,23 @@ class PropertyRepositoryTest extends RepositoryTestCase
     {
         $this->loadData();
         $this->assertCount(4, $this->repository->findLatest());
+    }
+
+    public function testAllFindAllVisibleQuery(): void
+    {
+        $search = new PropertySearch();
+        $query = $this->repository->findAllVisibleQuery($search);
+
+        $this->assertInstanceOf(Query::class, $query);
+    }
+
+    public function testAllFindAllVisibleQueryWithValues(): void
+    {
+        $search = (new PropertySearch())
+            ->setMaxPrice(50000)
+            ->setMinSurface(50);
+
+        $query = $this->repository->findAllVisibleQuery($search);
+        $this->assertInstanceOf(Query::class, $query);
     }
 }

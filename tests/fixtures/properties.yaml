@@ -1,30 +1,31 @@
 App\Entity\Property:
   property{1..5}:
-    title: Title<current()>
-    description: Description<current()>
-    surface: 20
-    rooms: 5
-    bedrooms: 4
-    floor: 2
-    price: 1500
-    heat: 1
-    city: Dakar
-    address: Scat Urbam
-    postal_code: 11500
+    title: <words(3, true)>
+    description: <sentence(3, true)>
+    surface: <numberBetween(20, 350)>
+    rooms: <numberBetween(2, 10)>
+    bedrooms: <numberBetween(1, 9)>
+    floor: <numberBetween(0, 15)>
+    price: <numberBetween(5000, 100000)>
+    heat: <numberBetween(0, 1)>
+    city: <city()>
+    address: <address()>
+    postal_code: <postcode()>
     created_at: <datetime()>
     sold: false
 
+
   property{6..9}:
-    title: Title<current()>
-    description: Description<current()>
-    surface: 20
-    rooms: 5
-    bedrooms: 4
-    floor: 2
-    price: 1500
-    heat: 1
-    city: Dakar
-    address: Scat Urbam
-    postal_code: 11500
+    title: <words(3, true)>
+    description: <sentence(3, true)>
+    surface: <numberBetween(20, 350)>
+    rooms: <numberBetween(2, 10)>
+    bedrooms: <numberBetween(1, 9)>
+    floor: <numberBetween(0, 15)>
+    price: <numberBetween(5000, 100000)>
+    heat: <numberBetween(0, 1)>
+    city: <city()>
+    address: <address()>
+    postal_code: <postcode()>
     created_at: <datetime()>
     sold: true

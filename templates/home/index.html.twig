@@ -5,18 +5,20 @@
 {% block body %}
   <div class="container mt-4">
     <h2>Les derniers biens</h2>
-    {% for property in properties %}
-      <div class="col-md-3" style="padding: 5px;">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">
-              <a href="{{ path('property.show', {'id': property.id, 'slug': property.slug}) }}">{{ property.title }}</a>
-            </h5>
-            <p class="card-test">{{ property.city }} ({{ property.postalCode }})</p>
-            <div class="text-primary" style="font-weight:bold; font-size: 2rem;">{{ property.formatedPrice }} XOF</div>
+    <div class="row">
+      {% for property in properties %}
+        <div class="col-md-3" style="padding: 5px;">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                <a href="{{ path('property.show', {'id': property.id, 'slug': property.slug}) }}">{{ property.title }}</a>
+              </h5>
+              <p class="card-text">{{ property.city }} ({{ property.postalCode }})</p>
+                <div class="text-primary" style="font-weight:bold; font-size: 2rem;">{{ property.formatedPrice }} XOF</div>
+            </div>
           </div>
         </div>
-      </div>
-    {% endfor %}
+      {% endfor %}
+    </div>
   </div>
 {% endblock %}

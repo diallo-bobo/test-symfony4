@@ -87,4 +87,16 @@ class WebTestCase extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
     {
         $this->assertSelectorTextContains('.alert.alert-' . $type, $message);
     }
+
+    /**
+     * @param int|null $expectedErrors
+     */
+    public function expectFormErrors(?int $expectedErrors = null): void
+    {
+        if (null === $expectedErrors) {
+            $this->assertTrue($this->client->getCrawler()->filter('.form-error-message')->count() > 0, 'Form errors missmatch.');
+        } else {
+            $this->assertEquals($expectedErrors, $this->client->getCrawler()->filter('.form-error-message')->count(), 'Form errors missmatch.');
+        }
+    }
 }

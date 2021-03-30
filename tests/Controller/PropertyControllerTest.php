@@ -5,6 +5,7 @@ namespace App\Tests\Controller;
 use App\Entity\Property;
 use App\Tests\FixturesTrait;
 use App\Tests\WebTestCase;
+use Knp\Component\Pager\Paginator;
 use Symfony\Component\HttpFoundation\Response;
 
 class PropertyControllerTest extends WebTestCase
@@ -15,7 +16,7 @@ class PropertyControllerTest extends WebTestCase
     {
         $this->client->request('GET', '/biens');
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $this->assertSelectorTextContains('h1', 'Voir tous vos biens');
+        $this->expectH1('Voir tous vos biens');
     }
 
     public function testShow(): void
@@ -25,7 +26,7 @@ class PropertyControllerTest extends WebTestCase
 
         $this->client->request('GET', '/biens/' . $property->getSlug() . '-' . $property->getId());
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        $this->assertSelectorTextContains('h1', $property->getTitle());
+        $this->expectH1($property->getTitle());
     }
 
     /**
@@ -43,5 +44,12 @@ class PropertyControllerTest extends WebTestCase
 
         $this->client->request('GET', '/biens/bobo-' . $property->getId());
         $this->assertResponseStatusCodeSame(Response::HTTP_MOVED_PERMANENTLY);
+    }
+
+    public function testSearchProperties(): void
+    {
+        $this->client->request('GET', '/biens?minSurface=50&maxPrice=75000');
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->expectH1('Voir tous vos biens');
     }
 }
