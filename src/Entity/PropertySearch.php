@@ -48,5 +48,4 @@ class PropertySearch
         $this->minSurface = $minSurface;
         return $this;
     }
-
 }

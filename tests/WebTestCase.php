@@ -14,12 +14,6 @@ class WebTestCase extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
      */
     protected KernelBrowser $client;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->client = self::createClient();
-    }
-
     /**
      * Log a user
      * @param User|null $user
@@ -66,17 +60,17 @@ class WebTestCase extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
         );
     }
 
+    public function expectSuccessAlert(): void
+    {
+        $this->expectAlert('success');
+    }
+
     /**
      * @param string $type
      */
     public function expectAlert(string $type): void
     {
         $this->assertEquals(1, $this->client->getCrawler()->filter('.alert.alert-' . $type)->count());
-    }
-
-    public function expectSuccessAlert(): void
-    {
-        $this->expectAlert('success');
     }
 
     /**
@@ -93,10 +87,19 @@ class WebTestCase extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
      */
     public function expectFormErrors(?int $expectedErrors = null): void
     {
+        $crawler = $this->client->getCrawler();
+        $selector = '.form-error-message';
+
         if (null === $expectedErrors) {
-            $this->assertTrue($this->client->getCrawler()->filter('.form-error-message')->count() > 0, 'Form errors missmatch.');
+            $this->assertTrue($crawler->filter($selector)->count() > 0, 'Form errors missmatch.');
         } else {
-            $this->assertEquals($expectedErrors, $this->client->getCrawler()->filter('.form-error-message')->count(), 'Form errors missmatch.');
+            $this->assertEquals($expectedErrors, $crawler->filter($selector)->count(), 'Form errors missmatch.');
         }
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->client = self::createClient();
     }
 }

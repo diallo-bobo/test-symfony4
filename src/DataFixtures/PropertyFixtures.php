@@ -9,15 +9,19 @@ use Faker\Factory;
 
 class PropertyFixtures extends Fixture
 {
-
-    public function load(ObjectManager $manager)
+    /**
+     * @param ObjectManager $manager
+     */
+    public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
 
-        for ($i = 0; $i <100; $i++) {
+        for ($i = 0; $i < 100; $i++) {
+            /** @var string $title */
+            $title = $faker->words(3, true);
             $property = new Property();
             $property
-                ->setTitle($faker->words(3, true))
+                ->setTitle($title)
                 ->setDescription($faker->sentence(3, true))
                 ->setSurface($faker->numberBetween(20, 350))
                 ->setRooms($faker->numberBetween(2, 10))
