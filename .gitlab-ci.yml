@@ -56,6 +56,9 @@ phpunit:
     # Install Xdebug
     - pecl install xdebug
     - docker-php-ext-enable xdebug
+
+    # Here to change xdebug mode
+    - echo xdebug.mode=coverage > /usr/local/etc/php/conf.d/xdebug.ini
   script:
     - php bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=never
   allow_failure: false
