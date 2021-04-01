@@ -1,9 +1,6 @@
 image: jakzal/phpqa:php7.4
 
 before_script:
-  # Install Xdebug
-  - pecl install xdebug
-  - docker-php-ext-enable xdebug
   # Composer
   - composer install
 
@@ -56,6 +53,9 @@ phpunit:
     - php bin/console doctrine:database:create --env=test
     - php bin/console doctrine:migration:migrate --env=test --no-interaction
 
+    # Install Xdebug
+    - pecl install xdebug
+    - docker-php-ext-enable xdebug
   script:
     - php bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=never
   allow_failure: false
