@@ -12,6 +12,7 @@ class UserRepositoryTest extends RepositoryTestCase
 {
     use FixturesTrait;
     use ToolsTrait;
+
     /**
      * @var UserRepository
      */

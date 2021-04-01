@@ -47,10 +47,14 @@ phpunit:
     - apt-get update && apt-get install -y git libsqlite3-dev libsqlite3-0 libzip-dev
     - curl -sSk https://getcomposer.org/installer | php -- --disable-tls && mv composer.phar /usr/local/bin/composer
     - docker-php-ext-install pdo pdo_sqlite zip
-#    - docker-php-ext-install mysqli pdo pdo_mysql zip
+    # docker-php-ext-install mysqli pdo pdo_mysql zip
     - php bin/console doctrine:database:drop --force --env=test
     - php bin/console doctrine:database:create --env=test
     - php bin/console doctrine:migration:migrate --env=test --no-interaction
+
+    # Install Xdebug
+    - pecl install xdebug
+    - docker-php-ext-enable xdebug
   script:
     - php bin/phpunit --coverage-html var/coverage
   allow_failure: false
