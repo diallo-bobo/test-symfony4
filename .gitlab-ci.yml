@@ -56,5 +56,5 @@ phpunit:
     - pecl install xdebug
     - docker-php-ext-enable xdebug
   script:
-    - php bin/phpunit --coverage-html var/coverage
+    - php bin/phpunit --configuration phpunit.xml.dist --coverage-text
   allow_failure: false
