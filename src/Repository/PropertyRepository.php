@@ -8,7 +8,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use phpDocumentor\Reflection\Types\This;
 
 /**
  * @method Property|null find($id, $lockMode = null, $lockVersion = null)
@@ -34,6 +33,15 @@ class PropertyRepository extends ServiceEntityRepository
     }
 
     /**
+     * @return QueryBuilder
+     */
+    private function findVisibleQuery(): QueryBuilder
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.sold = false');
+    }
+
+    /**
      * @param PropertySearch $search
      * @return Query
      */
@@ -52,6 +60,16 @@ class PropertyRepository extends ServiceEntityRepository
                 ->andWhere('p.surface >= :minsurface')
                 ->setParameter('minsurface', $search->getMinSurface());
         }
+
+        if ($search->getOptions()->count() > 0) {
+            $k = 0;
+            foreach ($search->getOptions() as $option) {
+                $k++;
+                $query = $query
+                    ->andWhere(":option$k MEMBER OF p.options")
+                    ->setParameter("option$k", $option);
+            }
+        }
         return $query->getQuery();
     }
 
@@ -64,14 +82,5 @@ class PropertyRepository extends ServiceEntityRepository
             ->setMaxResults(4)
             ->getQuery()
             ->getResult();
-    }
-
-    /**
-     * @return QueryBuilder
-     */
-    private function findVisibleQuery(): QueryBuilder
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.sold = false');
     }
 }

@@ -34,9 +34,15 @@ class AdminPropertyControllerTest extends WebTestCase
         return $this->loadFixtures(['properties']);
     }
 
+    public function logAdmin()
+    {
+        $users = $this->loadFixtures(['users']);
+        $this->login($users['user-admin']);
+    }
+
     public function testShowFormEditProperty(): void
     {
-        /** @var Property $property **/
+        /** @var Property $property * */
         ['property1' => $property] = $this->loadData();
 
         $this->logAdmin();
@@ -57,6 +63,7 @@ class AdminPropertyControllerTest extends WebTestCase
     {
         $this->logAdmin();
         $count = $this->propertyRepository->count([]);
+        $options = $this->loadFixtures(['options']);
 
         $crawler = $this->client->request('GET', '/admin/properties/create');
         $form = $crawler->selectButton('Ajouter')->form([
@@ -72,8 +79,8 @@ class AdminPropertyControllerTest extends WebTestCase
             'property[address]' => 'Scat Urbam',
             'property[postal_code]' => '16000',
             'property[sold]' => '1',
+            'property[options]' => [$options['option1']->getId(), $options['option2']->getId()],
         ]);
-
         $this->client->submit($form);
         $this->assertResponseRedirects('/admin/properties');
         $this->assertEquals($count + 1, $this->propertyRepository->count([]));
@@ -81,7 +88,7 @@ class AdminPropertyControllerTest extends WebTestCase
         $this->expectSuccessAlert();
     }
 
-    public function stestEditProperty(): void
+    public function testEditProperty(): void
     {
         $this->logAdmin();
 
@@ -89,19 +96,25 @@ class AdminPropertyControllerTest extends WebTestCase
         ['property1' => $property] = $this->loadData();
 
         $crawler = $this->client->request('GET', '/admin/properties/' . $property->getId());
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->expectH1('Editer le bien');
+
         $form = $crawler->selectButton('Editer')->form([
             'property[title]' => 'Un bien modifié',
             'property[description]' => 'Description d\'un bien modifiéss',
+            'property[postal_code]' => '11500',
+            'property[address]' => 'Fass Mbao',
         ]);
 
+        // dump($form->getValues());
+        // die();
         $this->client->submit($form);
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
-        $this->assertResponseRedirects('/admin/properties/');
         $this->client->followRedirect();
         $this->assertSelectorTextContains('.alert.alert-success', 'Bien modifié avec success');
     }
 
-    public function stestDeleteProperty(): void
+    public function testDeleteProperty(): void
     {
         $this->logAdmin();
         ['count' => $count] = $this->loadDataAndCountRows();
@@ -131,7 +144,7 @@ class AdminPropertyControllerTest extends WebTestCase
         ];
     }
 
-    public function stestNotDeletePropertyWithInvalidToken(): void
+    public function testNotDeletePropertyWithInvalidToken(): void
     {
         $this->logAdmin();
         ['count' => $count] = $this->loadDataAndCountRows();
@@ -152,7 +165,7 @@ class AdminPropertyControllerTest extends WebTestCase
         $this->assertSelectorTextContains('h1', 'Gérer les biens');
     }
 
-    public function stestDeletePropertyWithValidToken(): void
+    public function testDeletePropertyWithValidToken(): void
     {
         $this->logAdmin();
         ['property' => $property, 'count' => $count] = $this->loadDataAndCountRows();
@@ -177,11 +190,5 @@ class AdminPropertyControllerTest extends WebTestCase
     {
         parent::setUp();
         $this->propertyRepository = self::$container->get(PropertyRepository::class);
-    }
-
-    public function logAdmin()
-    {
-        $users = $this->loadFixtures(['users']);
-        $this->login($users['user-user']);
     }
 }

@@ -1,0 +1,3 @@
+App\Entity\Option:
+  option{1..5}:
+    name: <words(3, true)>

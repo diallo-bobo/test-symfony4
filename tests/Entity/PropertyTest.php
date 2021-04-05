@@ -2,6 +2,7 @@
 
 namespace App\Tests\Entity;
 
+use App\Entity\Option;
 use App\Entity\Property;
 use App\Tests\FixturesTrait;
 use App\Tests\KernelTestCase;
@@ -85,5 +86,15 @@ class PropertyTest extends KernelTestCase
     {
         ['property1' => $property] = $this->loadFixtures(['properties']);
         $this->assertHasErrors($this->getProperty()->setTitle($property->getTitle()), 1);
+    }
+
+    public function testValidPropertyWithOption(): void
+    {
+        $property = $this->getProperty();
+        $property->addOption((new Option())->setName('One option'));
+        $property->addOption((new Option())->setName('Two option'));
+
+        $this->assertHasErrors($property, 0);
+        $this->assertEquals(2, $property->getOptions()->count());
     }
 }
