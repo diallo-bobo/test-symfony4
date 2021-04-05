@@ -51,7 +51,7 @@ phpunit:
     # docker-php-ext-install mysqli pdo pdo_mysql zip
     - php bin/console doctrine:database:drop --force --env=test
     - php bin/console doctrine:database:create --env=test
-    - php bin/console doctrine:migration:migrate --env=test --no-interaction
+    - php bin/console doctrine:schema:update --force --env=test --no-interaction
 
     # Install Xdebug
     - pecl install xdebug
