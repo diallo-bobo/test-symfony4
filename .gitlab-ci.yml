@@ -5,10 +5,9 @@ before_script:
   - composer install
 
 cache:
-  key: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
   paths:
     - vendor/
-    
+
 stages:
   - SecurityChecker
   - CodingStandards
