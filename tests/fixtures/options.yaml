@@ -1,3 +1,7 @@
 App\Entity\Option:
-  option{1..5}:
-    name: <words(3, true)>
+  option1:
+    name: Balcon
+  option2:
+    name: Rez-de-chaussé
+  option3:
+    name: Ouverture fenêtre

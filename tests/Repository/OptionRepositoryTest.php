@@ -20,7 +20,7 @@ class OptionRepositoryTest extends RepositoryTestCase
     public function testCount()
     {
         $this->loadData();
-        $this->assertEquals(5, $this->repository->count([]));
+        $this->assertEquals(3, $this->repository->count([]));
     }
 
     public function loadData(): void
@@ -31,6 +31,6 @@ class OptionRepositoryTest extends RepositoryTestCase
     public function testFindAllOption(): void
     {
         $this->loadData();
-        $this->assertCount(5, $this->repository->findAll());
+        $this->assertCount(3, $this->repository->findAll());
     }
 }

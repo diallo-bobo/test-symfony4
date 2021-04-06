@@ -97,4 +97,25 @@ class PropertyTest extends KernelTestCase
         $this->assertHasErrors($property, 0);
         $this->assertEquals(2, $property->getOptions()->count());
     }
+
+    public function testAddOptionAtProperty()
+    {
+        $property = $this->getProperty();
+        $this->assertEquals(0, $property->getOptions()->count());
+
+        $property->addOption((new Option())->setName('Balcon'));
+        $this->assertEquals(1, $property->getOptions()->count());
+    }
+
+    public function testRemoveOptionAtProperty()
+    {
+        $property = $this->getProperty();
+
+        $option = (new Option())->setName('Balcon');
+        $property->addOption($option);
+        $this->assertEquals(1, $property->getOptions()->count());
+
+        $property->removeOption($option);
+        $this->assertEquals(0, $property->getOptions()->count());
+    }
 }
