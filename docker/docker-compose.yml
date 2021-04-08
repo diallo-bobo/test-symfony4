@@ -4,6 +4,8 @@ services:
   db_gitlab:
     image: mysql
     container_name: db_docker_gitlab
+    ports:
+      - "3307:3306"
     restart: always
     volumes:
       - db-data:/var/lib/mysql

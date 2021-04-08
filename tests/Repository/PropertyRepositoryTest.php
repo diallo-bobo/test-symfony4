@@ -2,7 +2,6 @@
 
 namespace App\Tests\Repository;
 
-use App\Entity\Option;
 use App\Entity\Property;
 use App\Entity\PropertySearch;
 use App\Repository\PropertyRepository;

@@ -62,3 +62,5 @@ phpunit:
   script:
     - php bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=never
   allow_failure: false
+#  only:
+#    - master
